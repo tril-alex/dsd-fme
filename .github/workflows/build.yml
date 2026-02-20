@@ -4,10 +4,9 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Install Tools
+      - name: Download and Install Cygwin
         run: |
-          choco install wget -y
-          wget https://www.cygwin.com/setup-x86_64.exe
+          curl -L https://www.cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
           .\setup-x86_64.exe --quiet-mode --packages gcc-core,gcc-g++,make,git,libfftw3-devel,libsndfile-devel,libusb1.0-devel,libportaudio-devel,librtlsdr-devel --root C:\cygwin --site http://mirrors.kernel.org/sourceware/cygwin/
       - name: Checkout Code
         uses: actions/checkout@v4
