@@ -4,10 +4,11 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Install Cygwin and tools
-        uses: cygwin/cygwin-install-action@v5
-        with:
-          packages: gcc-g++, make, git, libfftw3-devel, libsndfile-devel, libusb1.0-devel, libportaudio-devel, librtlsdr-devel
+      - name: Install Tools
+        run: |
+          choco install wget -y
+          wget https://www.cygwin.com/setup-x86_64.exe
+          .\setup-x86_64.exe --quiet-mode --packages gcc-core,gcc-g++,make,git,libfftw3-devel,libsndfile-devel,libusb1.0-devel,libportaudio-devel,librtlsdr-devel --root C:\cygwin --site http://mirrors.kernel.org/sourceware/cygwin/
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -18,18 +19,13 @@ jobs:
           repository: szechyjs/mbelib
           path: mbelib
       - name: Build mbelib
-        shell: C:\cygwin\bin\bash.exe --login -o pipefail -e {0}
+        shell: cmd
         run: |
-          cd "/cygdrive/d/a/dsd-fme/dsd-fme/mbelib"
-          gcc -c *.c
-          ar rcs libmbe.a *.o
+          C:\cygwin\bin\bash.exe --login -c "cd /cygdrive/d/a/dsd-fme/dsd-fme/mbelib && gcc -c *.c && ar rcs libmbe.a *.o"
       - name: Build DSD-FME
-        shell: C:\cygwin\bin\bash.exe --login -o pipefail -e {0}
+        shell: cmd
         run: |
-          cd "/cygdrive/d/a/dsd-fme/dsd-fme"
-          cp mbelib/mbelib.h include/
-          cp mbelib/libmbe.a ./
-          gcc -O2 -I./include src/*.c -o dsd-fme-aw.exe -L./ -lpthread -lm -lfftw3f -lsndfile -lrtlsdr -lusb-1.0 -lportaudio -lmbe
+          C:\cygwin\bin\bash.exe --login -c "cd /cygdrive/d/a/dsd-fme/dsd-fme && cp mbelib/mbelib.h include/ && cp mbelib/libmbe.a ./ && gcc -O2 -I./include src/*.c -o dsd-fme-aw.exe -L./ -lpthread -lm -lfftw3f -lsndfile -lrtlsdr -lusb-1.0 -lportaudio -lmbe"
       - name: Upload Result
         uses: actions/upload-artifact@v4
         with:
