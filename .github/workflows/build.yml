@@ -1,4 +1,4 @@
-name: Build DSD-FME
+name: Build DSD-FME 
 on: [push, workflow_dispatch]
 jobs:
   build:
