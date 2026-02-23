@@ -1025,11 +1025,11 @@ processMbeFrame (dsd_opts * opts, dsd_state * state, char imbe_fr[8][23], char a
         PrintAMBEData (opts, state, ambe_d);
       }
 
-      //restore MBE file save, slot 1 -- consider saving even if enc
-      if (opts->mbe_out_f != NULL && (state->dmr_encL == 0 || opts->dmr_mute_encL == 0) )
-      {
-        saveAmbe2450Data (opts, state, ambe_d);
-      }
+		//restore MBE file save, slot 1 -- consider saving even if enc
+		if (opts->mbe_out_f != NULL)
+		{
+		    saveAmbe2450Data (opts, state, ambe_d);
+		}
 
     }
     //stereo slots and slot 1 (right slot)
@@ -1486,7 +1486,7 @@ processMbeFrame (dsd_opts * opts, dsd_state * state, char imbe_fr[8][23], char a
       }
 
       //restore MBE file save, slot 2 -- consider saving even if enc
-      if (opts->mbe_out_fR != NULL && (state->dmr_encR == 0 || opts->dmr_mute_encR == 0) )
+      if (opts->mbe_out_f != NULL)
       {
         saveAmbe2450DataR (opts, state, ambe_d);
       }
